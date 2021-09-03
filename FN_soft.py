@@ -106,6 +106,12 @@ def close_program():
     root.quit()
 
 
+# get information from enter fields
+def get_input():
+    None
+
+
+
 # create program window
 root = Tk()
 root.attributes('-zoomed',True)
@@ -115,16 +121,16 @@ root.title('First Number')
 main_menu = Menu()
 
 file_menu = Menu()
-file_menu.add_command(label='Datastream Price', command=download_datastream)
-file_menu.add_command(label='Avant Video Price', command=download_avant_video)
-file_menu.add_command(label='Avant Skd Price', command=download_avant_skd)
-file_menu.add_command(label='Netair Price', command=download_netair)
+file_menu.add_command(label = 'Datastream Price', command = download_datastream)
+file_menu.add_command(label = 'Avant Video Price', command = download_avant_video)
+file_menu.add_command(label = 'Avant Skd Price', command = download_avant_skd)
+file_menu.add_command(label = 'Netair Price', command = download_netair)
 file_menu.add_separator()
-file_menu.add_command(label='Delete all prices', command=delete_prices)
+file_menu.add_command(label = 'Delete all prices', command = delete_prices)
 
-main_menu.add_cascade(label='PRICES', menu=file_menu)
-main_menu.add_command(label='SKS', command=None)
-main_menu.add_command(label='EXIT', command=close_program)
+main_menu.add_cascade(label = 'PRICES', menu = file_menu)
+main_menu.add_command(label = 'SKS', command = get_input)
+main_menu.add_command(label = 'EXIT', command = close_program)
 
 root.config(menu = main_menu)
 
@@ -134,10 +140,39 @@ tab = ttk.Notebook(root)
 
 tab1 = ttk.Frame(tab)
 tab.add(tab1, text = 'Materials')
-tab.pack(fill='both', expand=True)
+tab.pack(fill = 'both', expand = True)
 
 
+# variables
+pos = 0             # count of materials
+width_of_entry = 3  # width of field
 
+
+# fill first tab
+left_1 = 0          # first column from left side
+left_2 = 150         # second column from left side 
+line = 0            # index of first line
+step = 20           # step of line
+
+lbl = Label(tab1, text = 'UTP/FTP/COAX', fg='red').place(x = left_1, y = line)
+line += step
+
+
+check_utp5e = BooleanVar()
+Checkbutton(tab1, 
+    text = 'UTP 5e', 
+    variable = check_utp5e).place(x = left_1, y = line)
+enter_utp5e = Entry(tab1, width = width_of_entry)
+enter_utp5e.place(x = left_2, y = line)
+line += step
+
+check_utp5e_lszh = BooleanVar()
+Checkbutton(tab1, 
+    text = 'UTP 5e LSZH', 
+    variable = check_utp5e_lszh).place(x = left_1, y = line)
+enter_utp5e_lszh = Entry(tab1, width = width_of_entry)
+enter_utp5e_lszh.place(x = left_2, y = line)
+line += step
 
 
 # launch program window
