@@ -1,7 +1,5 @@
 # Here we go. Let's start study again
 
-# Numbers
-
 # Integer numbers
 
 '''x = 44
@@ -84,3 +82,47 @@ print('count() =', s4.count('i'))
 print('lstrip() =', s4.lstrip())
 print('rstrip() =', s4.rstrip())
 print('title() =', s4.title())'''
+
+# Lists
+
+'''lst_1 = list('First')	# create list
+lst_2 = ['d', 'fff', '23', 55, 55, 55] 
+
+print('List 1 =', lst_1)
+print('List 2 =', lst_2)
+
+lst_1.append('OOO')
+print('append =', lst_1)
+
+lst_1.extend(lst_2)
+print('extend =', lst_1)
+
+lst_1.insert(3, 'B')
+print('insert =', lst_1)
+
+lst_1.remove('t')
+print('remove =', lst_1)
+
+lst_1.pop()
+print('pop =', lst_1)
+
+lst_1.pop(5)
+print('pop[5] =', lst_1)
+
+print('index =', lst_1.index('d'))
+print('count =', lst_1.count(55))
+
+lst_1.reverse()
+print('reverse =', lst_1)
+
+lst_3 = lst_1.copy()
+print(id(lst_1))
+print(id(lst_2))
+print(id(lst_3))	# Not the same id
+
+lst_1.clear()
+print('clear =', lst_1)
+
+print(lst_1)
+print(lst_2)
+print(lst_3)'''
