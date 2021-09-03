@@ -27,3 +27,11 @@ y = 25.65
 print('x + y =', x + y)
 print('abs(x - y) =', abs(x - y))
 print('round(x + y) =', round(x + y))'''
+
+# Number systems
+
+'''x = 435
+
+print('bin(x) =', bin(x))
+print('hex(x) =', hex(x))
+print('oct(x) =', oct(x))'''
