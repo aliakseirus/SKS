@@ -101,8 +101,14 @@ def delete_prices():
         messagebox.showinfo('Ohh!', 'There is no folder with prices!')
 
 
+# closing program
+def close_program():
+    root.quit()
+
+
 # create program window
 root = Tk()
+root.attributes('-zoomed',True)
 root.title('First Number')
 
 # create menu
@@ -117,10 +123,21 @@ file_menu.add_separator()
 file_menu.add_command(label='Delete all prices', command=delete_prices)
 
 main_menu.add_cascade(label='PRICES', menu=file_menu)
-main_menu.add_cascade(label='SKS', command=None)
-main_menu.add_cascade(label='EXIT', command=None)
+main_menu.add_command(label='SKS', command=None)
+main_menu.add_command(label='EXIT', command=close_program)
 
 root.config(menu = main_menu)
+
+
+# create tabs
+tab = ttk.Notebook(root)
+
+tab1 = ttk.Frame(tab)
+tab.add(tab1, text = 'Materials')
+tab.pack(fill='both', expand=True)
+
+
+
 
 
 # launch program window
