@@ -151,3 +151,40 @@ print('tup_3 is a', type(tup_3))
 
 tup_4 = ('f',)                      # create tuple
 print('tup_4 is a', type(tup_4))'''
+
+
+# Dictionaries
+
+'''d1 = {}                                     # create dict
+d2 = {'motor': 1, 'door': 5, 'wheel': 4}    # create dict
+
+print(d2['motor'])
+print(d2['wheel'])
+
+d1['passenger'] = 3
+print('d1 =', d1)
+print('d2 =', d2)
+
+d3 = d2.copy()
+
+print(id(d1))
+print(id(d2))
+print(id(d3))   # not the same adress
+
+d2.update(d1)
+print('update() =', d2)
+
+print('get(key) =', d2.get('wheel'))
+print('get(key) =', d2.get('ff'))
+
+print('items() =', d2.items())
+print('keys() =', d2.keys())
+print('values() =', d2.values())
+
+d3 = d2.pop('door')
+print('d3 =', d3)
+print('d2 =', d2)
+
+d3 = d2.popitem()
+print('d3 =', d3)
+print('d2 =', d2)'''
