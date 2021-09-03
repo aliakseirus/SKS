@@ -1,5 +1,6 @@
 # Here we go. Let's start study again
 
+
 # Integer numbers
 
 '''x = 44
@@ -17,6 +18,7 @@ print('divmod(x,y) =', divmod(x,y))
 print('x ** y =', x ** y)
 print('pow(x, y) =', pow(x,y))'''
 
+
 # Float numbers
 
 '''x = 150
@@ -33,6 +35,7 @@ print('round(x + y) =', round(x + y))'''
 print('bin(x) =', bin(x))
 print('hex(x) =', hex(x))
 print('oct(x) =', oct(x))'''
+
 
 # Strings
 
@@ -83,6 +86,7 @@ print('lstrip() =', s4.lstrip())
 print('rstrip() =', s4.rstrip())
 print('title() =', s4.title())'''
 
+
 # Lists
 
 '''lst_1 = list('First')	# create list
@@ -126,3 +130,24 @@ print('clear =', lst_1)
 print(lst_1)
 print(lst_2)
 print(lst_3)'''
+
+
+# Tuples
+
+'''lst = [1, 2, 3, 4, 5, 6]
+tup = (1, 2, 3, 4, 5, 6)
+
+print(lst.__sizeof__())
+print(tup.__sizeof__())	# tuples takes less memory
+
+tup_1 = tuple()                     # create tuple
+print('tup_1 is a', type(tup_1))
+
+tup_2 = ()                          # create tuple
+print('tup_2 is a', type(tup_2))
+
+tup_3 = ('f')                       # create string (not tuple!)
+print('tup_3 is a', type(tup_3))
+
+tup_4 = ('f',)                      # create tuple
+print('tup_4 is a', type(tup_4))'''
