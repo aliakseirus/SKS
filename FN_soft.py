@@ -16,6 +16,7 @@ from tkinter.ttk import Combobox
 import os
 import urllib.request
 import shutil
+import pandas as pd
 
 
 # download Datastream price
@@ -24,16 +25,19 @@ def download_datastream():
         pass
     else:
         os.mkdir('Prices')
-    
-    try:
-        site = urllib.request.urlopen("https://datastream.by/files/"
-            "Datastream_price.xls").read()
-        file = open('Prices/Datastream_price.xls', 'wb')
-        file.write(site)
-        file.close()
-        messagebox.showinfo('Good!', 'Datastream price has beed downloaded!')
-    except:
-        messagebox.showinfo('Warning!', 'Something went wrong!')
+
+    if os.path.isfile('Prices/Datastream_price.xls'):
+        pass
+    else:
+        try:
+            site = urllib.request.urlopen("https://datastream.by/files/"
+                "Datastream_price.xls").read()
+            file = open('Prices/Datastream_price.xls', 'wb')
+            file.write(site)
+            file.close()
+            messagebox.showinfo('Good!', 'Datastream price has beed downloaded!')
+        except:
+            messagebox.showinfo('Warning!', 'Something went wrong!')
 
 
 # download Avant Video price
@@ -43,16 +47,19 @@ def download_avant_video():
     else:
         os.mkdir('Prices')
     
-    try:
-        site = urllib.request.urlopen("https://avant.by/upload/iblock/529/"
-            "avant_tehno_prais_list_video.xlsx").read()
-        file = open('Prices/avant-tehno-prais-list-video.xlsx', 'wb')
-        file.write(site)
-        file.close()
-        messagebox.showinfo('Good!', 'Avant Video price has beed downloaded!')
-    except:
-        messagebox.showinfo('Warning!', 'Something went wrong! I think, tnat '
-            'Avant change way to price again.')
+    if os.path.isfile('Prices/avant-tehno-prais-list-video.xlsx'):
+        pass
+    else:
+        try:
+            site = urllib.request.urlopen("https://avant.by/upload/iblock/529/"
+                "avant_tehno_prais_list_video.xlsx").read()
+            file = open('Prices/avant-tehno-prais-list-video.xlsx', 'wb')
+            file.write(site)
+            file.close()
+            messagebox.showinfo('Good!', 'Avant Video price has beed downloaded!')
+        except:
+            messagebox.showinfo('Warning!', 'Something went wrong! I think, tnat '
+                'Avant change way to price again.')
 
 
 # download Avant Skd price
@@ -62,16 +69,19 @@ def download_avant_skd():
     else:
         os.mkdir('Prices')
     
-    try:
-        site = urllib.request.urlopen("https://avant.by/upload/iblock/4f1/"
-            "avant_tehno_prais_list_dostup.xlsx").read()
-        file = open('Prices/avant-tehno-prais-list-dostup.xlsx', 'wb')
-        file.write(site)
-        file.close()
-        messagebox.showinfo('Good!', 'Avant Skd price has beed downloaded!')
-    except:
-        messagebox.showinfo('Warning!', 'Something went wrong! I think, tnat '
-            'Avant change way to price again.')
+    if os.path.isfile('Prices/avant-tehno-prais-list-dostup.xlsx'):
+        pass
+    else:
+        try:
+            site = urllib.request.urlopen("https://avant.by/upload/iblock/4f1/"
+                "avant_tehno_prais_list_dostup.xlsx").read()
+            file = open('Prices/avant-tehno-prais-list-dostup.xlsx', 'wb')
+            file.write(site)
+            file.close()
+            messagebox.showinfo('Good!', 'Avant Skd price has beed downloaded!')
+        except:
+            messagebox.showinfo('Warning!', 'Something went wrong! I think, tnat '
+                'Avant change way to price again.')
 
 
 # download Netair price
@@ -80,16 +90,19 @@ def download_netair():
         pass
     else:
         os.mkdir('Prices')
-    
-    try:
-        site = urllib.request.urlopen("https://netair.by/price/price_no_data/"
-            "price_netair_b2b_sp.xls").read()
-        file = open('Prices/price_netair_b2b_sp.xls', 'wb')
-        file.write(site)
-        file.close()
-        messagebox.showinfo('Good!', 'Netair price has beed downloaded!')
-    except:
-        messagebox.showinfo('Warning!', 'Something went wrong!')
+
+    if os.path.isfile('Prices/price_netair_b2b_sp.xls'):
+        pass
+    else:
+        try:
+            site = urllib.request.urlopen("https://netair.by/price/price_no_data/"
+                "price_netair_b2b_sp.xls").read()
+            file = open('Prices/price_netair_b2b_sp.xls', 'wb')
+            file.write(site)
+            file.close()
+            messagebox.showinfo('Good!', 'Netair price has beed downloaded!')
+        except:
+            messagebox.showinfo('Warning!', 'Something went wrong!')
 
 
 # delete folder with prices
@@ -108,13 +121,36 @@ def close_program():
 
 # get information from enter fields
 def get_input():
-    None
+    
+    # check of datastream price
+    try:
+        datastream_price = pd.ExcelFile("Prices/Datastream_price.xls")
+    except:
+        download_datastream()
 
+    # check of avant video price
+    try:
+        avant_video_price = pd.ExcelFile("Prices/avant-tehno-prais-list-video.xlsx")
+    except:
+        download_avant_video()
 
+    # check of avant skd price
+    try:
+        avant_skd_price = pd.ExcelFile("Prices/avant-tehno-prais-list-dostup.xlsx")
+    except:
+        download_avant_skd()
+
+    # check of netair price
+    try:
+        netair_price = pd.ExcelFile("Prices/price_netair_b2b_sp.xls")
+    except:
+        download_netair()
+
+    print('All')
 
 # create program window
 root = Tk()
-root.attributes('-zoomed',True)
+# root.attributes('-zoomed',True)
 root.title('First Number')
 
 # create menu
