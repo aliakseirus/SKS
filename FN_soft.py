@@ -21,18 +21,14 @@ import pandas as pd
 
 # download Datastream price
 def download_datastream():
-    if os.path.exists('Prices'):
-        pass
-    else:
-        os.mkdir('Prices')
+    if not os.path.exists('/home/' + str(os.environ.get( "USERNAME" )) + '/Documents/Prices'):
+        os.mkdir('/home/' + str(os.environ.get( "USERNAME" )) + '/Documents/Prices')
 
-    if os.path.isfile('Prices/Datastream_price.xls'):
-        pass
-    else:
+    if not os.path.isfile('Datastream_price.xls'):
         try:
-            site = urllib.request.urlopen("https://datastream.by/files/"
-                "Datastream_price.xls").read()
-            file = open('Prices/Datastream_price.xls', 'wb')
+            site = urllib.request.urlopen("https://datastream.by/files/Datastream_price.xls").read()
+            file = open('/home/' + str(os.environ.get( "USERNAME" )) + 
+                '/Documents/Prices/Datastream_price.xls', 'wb')
             file.write(site)
             file.close()
             messagebox.showinfo('Good!', 'Datastream price has beed downloaded!')
@@ -42,18 +38,16 @@ def download_datastream():
 
 # download Avant Video price
 def download_avant_video():
-    if os.path.exists('Prices'):
-        pass
-    else:
-        os.mkdir('Prices')
+    if not os.path.exists('/home/' + str(os.environ.get( "USERNAME" )) + '/Documents/Prices'):
+        os.mkdir('/home/' + str(os.environ.get( "USERNAME" )) + '/Documents/Prices')
     
-    if os.path.isfile('Prices/avant-tehno-prais-list-video.xlsx'):
-        pass
-    else:
+    if not os.path.isfile('/home/' + str(os.environ.get( "USERNAME" )) + 
+        '/Documents/Prices/avant-tehno-prais-list-video.xlsx'):
         try:
             site = urllib.request.urlopen("https://avant.by/upload/iblock/529/"
                 "avant_tehno_prais_list_video.xlsx").read()
-            file = open('Prices/avant-tehno-prais-list-video.xlsx', 'wb')
+            file = open('/home/' + str(os.environ.get( "USERNAME" )) + 
+                '/Documents/Prices/avant-tehno-prais-list-video.xlsx', 'wb')
             file.write(site)
             file.close()
             messagebox.showinfo('Good!', 'Avant Video price has beed downloaded!')
@@ -64,18 +58,16 @@ def download_avant_video():
 
 # download Avant Skd price
 def download_avant_skd():
-    if os.path.exists('Prices'):
-        pass
-    else:
-        os.mkdir('Prices')
+    if not os.path.exists('/home/' + str(os.environ.get( "USERNAME" )) + '/Documents/Prices'):
+        os.mkdir('/home/' + str(os.environ.get( "USERNAME" )) + '/Documents/Prices')
     
-    if os.path.isfile('Prices/avant-tehno-prais-list-dostup.xlsx'):
-        pass
-    else:
+    if not os.path.isfile('/home/' + str(os.environ.get( "USERNAME" )) + 
+        '/Documents/Prices/avant-tehno-prais-list-dostup.xlsx'):
         try:
             site = urllib.request.urlopen("https://avant.by/upload/iblock/4f1/"
                 "avant_tehno_prais_list_dostup.xlsx").read()
-            file = open('Prices/avant-tehno-prais-list-dostup.xlsx', 'wb')
+            file = open('/home/' + str(os.environ.get( "USERNAME" )) + 
+                '/Documents/Prices/avant-tehno-prais-list-dostup.xlsx', 'wb')
             file.write(site)
             file.close()
             messagebox.showinfo('Good!', 'Avant Skd price has beed downloaded!')
@@ -86,18 +78,16 @@ def download_avant_skd():
 
 # download Netair price
 def download_netair():
-    if os.path.exists('Prices'):
-        pass
-    else:
-        os.mkdir('Prices')
+    if not os.path.exists('/home/' + str(os.environ.get( "USERNAME" )) + '/Documents/Prices'):
+        os.mkdir('/home/' + str(os.environ.get( "USERNAME" )) + '/Documents/Prices')
 
-    if os.path.isfile('Prices/price_netair_b2b_sp.xls'):
-        pass
-    else:
+    if not os.path.isfile('/home/' + str(os.environ.get( "USERNAME" )) + 
+        '/Documents/Prices/price_netair_b2b_sp.xls'):
         try:
             site = urllib.request.urlopen("https://netair.by/price/price_no_data/"
                 "price_netair_b2b_sp.xls").read()
-            file = open('Prices/price_netair_b2b_sp.xls', 'wb')
+            file = open('/home/' + str(os.environ.get( "USERNAME" )) + 
+                '/Documents/Prices/price_netair_b2b_sp.xls', 'wb')
             file.write(site)
             file.close()
             messagebox.showinfo('Good!', 'Netair price has beed downloaded!')
@@ -108,7 +98,7 @@ def download_netair():
 # delete folder with prices
 def delete_prices():
     try:
-        shutil.rmtree('Prices')
+        shutil.rmtree('/home/' + str(os.environ.get( "USERNAME" )) + '/Documents/Prices')
         messagebox.showinfo('Good!', 'All prices has been removed!')
     except:
         messagebox.showinfo('Ohh!', 'There is no folder with prices!')
@@ -124,25 +114,29 @@ def get_input():
     
     # check of datastream price
     try:
-        datastream_price = pd.ExcelFile("Prices/Datastream_price.xls")
+        datastream_price = pd.ExcelFile('/home/' + str(os.environ.get( "USERNAME" )) + 
+            '/Documents/Prices/Datastream_price.xls')
     except:
         download_datastream()
 
     # check of avant video price
     try:
-        avant_video_price = pd.ExcelFile("Prices/avant-tehno-prais-list-video.xlsx")
+        avant_video_price = pd.ExcelFile('/home/' + str(os.environ.get( "USERNAME" )) + 
+            '/Documents/Prices/avant-tehno-prais-list-video.xlsx')
     except:
         download_avant_video()
 
     # check of avant skd price
     try:
-        avant_skd_price = pd.ExcelFile("Prices/avant-tehno-prais-list-dostup.xlsx")
+        avant_skd_price = pd.ExcelFile('/home/' + str(os.environ.get( "USERNAME" )) + 
+            '/Documents/Prices/avant-tehno-prais-list-dostup.xlsx')
     except:
         download_avant_skd()
 
     # check of netair price
     try:
-        netair_price = pd.ExcelFile("Prices/price_netair_b2b_sp.xls")
+        netair_price = pd.ExcelFile('/home/' + str(os.environ.get( "USERNAME" )) + 
+            '/Documents/Prices/price_netair_b2b_sp.xls')
     except:
         download_netair()
 
@@ -150,8 +144,10 @@ def get_input():
 
 # create program window
 root = Tk()
-# root.attributes('-zoomed',True)
+root.attributes('-zoomed',True)
 root.title('First Number')
+root.iconphoto(True, PhotoImage(file='/home/' + str(os.environ.get( "USERNAME" )) + 
+            '/Documents/Logo/logo_fn.png'))
 
 # create menu
 main_menu = Menu()
