@@ -13,6 +13,7 @@ from tkinter import Checkbutton
 from tkinter import messagebox
 from tkinter import scrolledtext
 from tkinter.ttk import Combobox
+from datastream import DATASTREAM
 import os
 import urllib.request
 import shutil
@@ -112,39 +113,85 @@ def close_program():
 # get information from enter fields
 def get_input():
     
-    # check of datastream price
+
+# variables
+    material_list = []
+    kolvo_list = []
+    cena_s_nds_list = []
+    cena_bez_nds_list = []
+    short_name_list = []
+
+
+# check of datastream price
     try:
         datastream_price = pd.ExcelFile('/home/' + str(os.environ.get( "USERNAME" )) + 
             '/Documents/Prices/Datastream_price.xls')
     except:
         download_datastream()
 
-    # check of avant video price
+# check of avant video price
     try:
         avant_video_price = pd.ExcelFile('/home/' + str(os.environ.get( "USERNAME" )) + 
             '/Documents/Prices/avant-tehno-prais-list-video.xlsx')
     except:
         download_avant_video()
 
-    # check of avant skd price
+# check of avant skd price
     try:
         avant_skd_price = pd.ExcelFile('/home/' + str(os.environ.get( "USERNAME" )) + 
             '/Documents/Prices/avant-tehno-prais-list-dostup.xlsx')
     except:
         download_avant_skd()
 
-    # check of netair price
+# check of netair price
     try:
         netair_price = pd.ExcelFile('/home/' + str(os.environ.get( "USERNAME" )) + 
             '/Documents/Prices/price_netair_b2b_sp.xls')
     except:
         download_netair()
 
-    print('All')
+
+# find price of material in Datastream price
+    class DATASTREAM():
+        
+        def __init__(self, enter, vkladka, artikul, description, short_description):
+            self.enter = enter
+            self.vkladka = vkladka
+            self.artikul = artikul
+            self.description = description
+            self.short_description = short_description
+        
+        def find_price(self): 
+            if self.enter:
+                df = datastream_price.parse(self.vkladka)
+                df = df[['Unnamed: 0', 'Unnamed: 3']]
+                df = df.rename(columns={'Unnamed: 0': 'Line0'})
+                df = df.rename(columns={'Unnamed: 3': 'Line3'})
+                df = df[df.Line0 == self.artikul]
+                df = df[['Line3']]
+                cena_bez_nds = float(df.mean())
+                cena_s_nds = round(cena_bez_nds*1.2,2)
+                material_list.append(self.description)
+                short_name_list.append(self.short_description)
+                kolvo_list.append(self.enter)
+                cena_s_nds_list.append(cena_s_nds)
+                cena_bez_nds_list.append(cena_bez_nds)
+
+
+# find prices of first page
+    if check_utp5e.get():
+        try:
+            DATASTREAM(int(enter_utp5e.get()), 'TWT-LANMASTER', 'TWT-5EUTP', 
+                'Кабель UTP, 4 пары, кат.5e, м.', 'TWT 5E UTP').find_price()
+        except:
+            messagebox.showerror('Внимание!', 'Введите целое значение для "UTP 5E"!')
+            return()
+
 
 # create program window
 root = Tk()
-root.attributes('-zoomed',True)
+# root.attributes('-zoomed',True)
+root.geometry('600x400+200+100')
 root.title('First Number')
 root.iconphoto(True, PhotoImage(file='/home/' + str(os.environ.get( "USERNAME" )) + 
             '/Documents/Logo/logo_fn.png'))
