@@ -27,7 +27,7 @@ for symbol in start_list:
     elif type(symbol) == list:
         for under_symbol in symbol:
             if type(under_symbol) == str:
-                position = str(start_list.index(symbol)) + ' - ' + str(symbol.index(under_symbol))
+                position = str(start_list.index(symbol)) + '-' + str(symbol.index(under_symbol))
                 end_list.append(position)
 
 print('Answer of exercise 2:')
