@@ -895,28 +895,32 @@ def get_input():
 
 # check of datastream price
     try:
-        datastream_price = pd.ExcelFile('/home/' + str(os.environ.get( "USERNAME" )) + 
+        datastream_price = pd.ExcelFile(
+            '/home/' + str(os.environ.get( "USERNAME" )) + 
             '/Documents/Prices/Datastream_price.xls')
     except:
         download_datastream()
 
 # check of avant video price
     try:
-        avant_video_price = pd.ExcelFile('/home/' + str(os.environ.get( "USERNAME" )) + 
+        avant_video_price = pd.ExcelFile(
+            '/home/' + str(os.environ.get( "USERNAME" )) + 
             '/Documents/Prices/avant-tehno-prais-list-video.xlsx')
     except:
         download_avant_video()
 
 # check of avant skd price
     try:
-        avant_skd_price = pd.ExcelFile('/home/' + str(os.environ.get( "USERNAME" )) + 
+        avant_skd_price = pd.ExcelFile(
+            '/home/' + str(os.environ.get( "USERNAME" )) + 
             '/Documents/Prices/avant-tehno-prais-list-dostup.xlsx')
     except:
         download_avant_skd()
 
 # check of netair price
     try:
-        netair_price = pd.ExcelFile('/home/' + str(os.environ.get( "USERNAME" )) + 
+        netair_price = pd.ExcelFile(
+            '/home/' + str(os.environ.get( "USERNAME" )) + 
             '/Documents/Prices/price_netair_b2b_sp.xls')
     except:
         download_netair()
@@ -924,7 +928,8 @@ def get_input():
 
 # find price of material in Datastream price
     class DATASTREAM():
-        def __init__(self, enter, vkladka, artikul, description, short_description):
+        def __init__(self, enter, vkladka, artikul, 
+                     description, short_description):
             self.enter = enter
             self.vkladka = vkladka
             self.artikul = artikul
@@ -955,7 +960,8 @@ def get_input():
 
 # find price of material in Avant Video price
     class AVANT():
-        def __init__(self, enter, vkladka, artikul, description, short_description):
+        def __init__(self, enter, vkladka, artikul, 
+                     description, short_description):
             self.enter = enter
             self.vkladka = vkladka
             self.artikul = artikul
@@ -984,7 +990,8 @@ def get_input():
 
 # find price of material in Avant Skd price
     class AVANT_SKD():
-        def __init__(self, enter, vkladka, artikul, description, short_description):
+        def __init__(self, enter, vkladka, artikul, 
+                     description, short_description):
             self.enter = enter
             self.vkladka = vkladka
             self.artikul = artikul
@@ -1015,7 +1022,8 @@ def get_input():
 
 # find price of material in Netair price
     class NETAIR():
-        def __init__(self, enter, vkladka, artikul, description, short_description):
+        def __init__(self, enter, vkladka, artikul, 
+                     description, short_description):
             self.enter = enter
             self.vkladka = vkladka
             self.artikul = artikul
@@ -1054,7 +1062,24 @@ def get_input():
         
         def find_price(self):
             if self.enter:
-                header = {'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3','accept-encoding':'gzip, deflate, br','accept-language':'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7','cache-control':'no-cache','dnt': '1','pragma': 'no-cache','sec-fetch-mode': 'navigate','sec-fetch-site': 'none','sec-fetch-user': '?1','upgrade-insecure-requests': '1','user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36'}
+                header = {
+                    'accept':
+                    'text/html,application/xhtml+xml,application/xml;'
+                    'q=0.9,image/webp,image/apng,*/*;q=0.8,'
+                    'application/signed-exchange;v=b3',
+                    'accept-encoding':'gzip, deflate, br',
+                    'accept-language':'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
+                    'cache-control':'no-cache',
+                    'dnt': '1',
+                    'pragma': 'no-cache',
+                    'sec-fetch-mode': 'navigate',
+                    'sec-fetch-site': 'none',
+                    'sec-fetch-user': '?1',
+                    'upgrade-insecure-requests': '1',
+                    'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'
+                    ' AppleWebKit/537.36 (KHTML, like Gecko)'
+                    ' Chrome/76.0.3809.100 Safari/537.36'
+                    }
                 session = requests.Session()
                 session.headers = header
                 
@@ -1062,7 +1087,8 @@ def get_input():
                     r = session.get(self.url)
                     html = r.text
                     soup = BeautifulSoup(html, 'lxml')
-                    cena_bez_nds = soup.find('span', class_="price_value").get_text()
+                    cena_bez_nds = soup.find(
+                        'span', class_="price_value").get_text()
                 except:
                     cena_bez_nds = 0
                 
@@ -1090,7 +1116,24 @@ def get_input():
 
         def find_price(self):
             if self.enter:
-                header = {'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3','accept-encoding':'gzip, deflate, br','accept-language':'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7','cache-control':'no-cache','dnt': '1','pragma': 'no-cache','sec-fetch-mode': 'navigate','sec-fetch-site': 'none','sec-fetch-user': '?1','upgrade-insecure-requests': '1','user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36'}
+                header = {
+                    'accept':
+                    'text/html,application/xhtml+xml,application/xml;'
+                    'q=0.9,image/webp,image/apng,*/*;q=0.8,'
+                    'application/signed-exchange;v=b3',
+                    'accept-encoding':'gzip, deflate, br',
+                    'accept-language':'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
+                    'cache-control':'no-cache',
+                    'dnt': '1',
+                    'pragma': 'no-cache',
+                    'sec-fetch-mode': 'navigate',
+                    'sec-fetch-site': 'none',
+                    'sec-fetch-user': '?1',
+                    'upgrade-insecure-requests': '1',
+                    'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'
+                    ' AppleWebKit/537.36 (KHTML, like Gecko)'
+                    ' Chrome/76.0.3809.100 Safari/537.36'
+                    }
                 session = requests.Session()
                 session.headers = header
                 
@@ -1098,7 +1141,8 @@ def get_input():
                     r = session.get(self.url)
                     html = r.text
                     soup = BeautifulSoup(html, 'lxml')
-                    price =  soup.find('p', class_="price shk-price").get_text()
+                    price =  soup.find(
+                        'p', class_="price shk-price").get_text()
                     price = price.split(',')
                     pr1 = str(price[0])
                     pr2 = str(price[1])
@@ -1216,7 +1260,8 @@ def get_input():
                     r = session.get(self.url)
                     html = r.text
                     soup = BeautifulSoup(html, 'lxml')
-                    price = soup.find('div', class_="catalog_price_value").get_text()
+                    price = soup.find(
+                        'div', class_="catalog_price_value").get_text()
                     price = price.split(',')
                     pr1 = str(price[0])
                     pr2 = str(price[1])
@@ -1255,7 +1300,10 @@ def get_input():
                 r = session.get(self.url)
                 html = r.text
                 soup = BeautifulSoup(html, 'lxml')
-                price = soup.find('div', class_="bxr-market-item-price bxr-format-price bxr-market-price-without-name").get_text()
+                price = soup.find(
+                    'div', 
+                    class_="bxr-market-item-price bxr-"
+                    "format-price bxr-market-price-without-name").get_text()
                 price = price.split('руб')
                 
                 try:
@@ -1312,7 +1360,24 @@ def get_input():
         
         def find_price(self):
             if self.enter:
-                header = {'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3','accept-encoding':'gzip, deflate, br','accept-language':'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7','cache-control':'no-cache','dnt': '1','pragma': 'no-cache','sec-fetch-mode': 'navigate','sec-fetch-site': 'none','sec-fetch-user': '?1','upgrade-insecure-requests': '1','user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36'}
+                header = {
+                    'accept':
+                    'text/html,application/xhtml+xml,application/xml;'
+                    'q=0.9,image/webp,image/apng,*/*;q=0.8,'
+                    'application/signed-exchange;v=b3',
+                    'accept-encoding':'gzip, deflate, br',
+                    'accept-language':'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
+                    'cache-control':'no-cache',
+                    'dnt': '1',
+                    'pragma': 'no-cache',
+                    'sec-fetch-mode': 'navigate',
+                    'sec-fetch-site': 'none',
+                    'sec-fetch-user': '?1',
+                    'upgrade-insecure-requests': '1',
+                    'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'
+                    ' AppleWebKit/537.36 (KHTML, like Gecko)'
+                    ' Chrome/76.0.3809.100 Safari/537.36'
+                    }
                 session = requests.Session()
                 session.headers = header
                 r = session.get(self.url)
@@ -1344,7 +1409,24 @@ def get_input():
         
         def find_price(self):
             if self.enter:
-                header = {'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3','accept-encoding':'gzip, deflate, br','accept-language':'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7','cache-control':'no-cache','dnt': '1','pragma': 'no-cache','sec-fetch-mode': 'navigate','sec-fetch-site': 'none','sec-fetch-user': '?1','upgrade-insecure-requests': '1','user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36'}
+                header = {
+                    'accept':
+                    'text/html,application/xhtml+xml,application/xml;'
+                    'q=0.9,image/webp,image/apng,*/*;q=0.8,'
+                    'application/signed-exchange;v=b3',
+                    'accept-encoding':'gzip, deflate, br',
+                    'accept-language':'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
+                    'cache-control':'no-cache',
+                    'dnt': '1',
+                    'pragma': 'no-cache',
+                    'sec-fetch-mode': 'navigate',
+                    'sec-fetch-site': 'none',
+                    'sec-fetch-user': '?1',
+                    'upgrade-insecure-requests': '1',
+                    'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'
+                    ' AppleWebKit/537.36 (KHTML, like Gecko)'
+                    ' Chrome/76.0.3809.100 Safari/537.36'
+                    }                
                 session = requests.Session()
                 session.headers = header
                 r = session.get(self.url)
@@ -1378,7 +1460,8 @@ def get_input():
             self.enter = enter
 
         def find_price(self):
-            if self.check.get():
+            if self.check.get() == 0:
+                kolvo = 0
                 try:
                     kolvo = int(self.enter.get())
                 except:
@@ -1395,149 +1478,198 @@ def get_input():
                 price_per_one.append(self.price)
                 price_of_work.append(round(kolvo*self.price,2))
 
-# find prices of first page
+# Materials: UTP/FTP/COAX
     if check_utp5e.get():
         try:
-            DATASTREAM(int(enter_utp5e.get()), 'TWT-LANMASTER', 'TWT-5EUTP', 
-                'Кабель UTP, 4 пары, кат.5e, м.', 'UTP 5e').find_price()
+            DATASTREAM(
+                    int(enter_utp5e.get()), 'TWT-LANMASTER', 
+                    'TWT-5EUTP', 'Кабель UTP, 4 пары, кат.5e, м.', 
+                    'UTP 5e').find_price()
         except:
-            DATASTREAM(1, 'TWT-LANMASTER', 'TWT-5EUTP', 
-                'Кабель UTP, 4 пары, кат.5e, м.', 'UTP 5e').find_price()
+            DATASTREAM(
+                    1, 'TWT-LANMASTER',
+                    'TWT-5EUTP', 'Кабель UTP, 4 пары, кат.5e, м.', 
+                    'UTP 5e').find_price()
     if check_utp5e_lszh.get():
         try:
-            DATASTREAM(int(enter_utp5e_lszh.get()), 'TWT-LANMASTER', 'TWT-5EUTP-LSZH', 
-                'Кабель UTP, 4 пары, кат.5e, LSZH, м.', 'UTP 5e LSZH').find_price()
+            DATASTREAM(
+                    int(enter_utp5e_lszh.get()), 'TWT-LANMASTER', 
+                    'TWT-5EUTP-LSZH', 'Кабель UTP, 4 пары, кат.5e, LSZH, м.', 
+                    'UTP 5e LSZH').find_price()
         except:
-            DATASTREAM(1, 'TWT-LANMASTER', 'TWT-5EUTP-LSZH', 
-                'Кабель UTP, 4 пары, кат.5e, LSZH, м.', 'UTP 5e LSZH').find_price()
+            DATASTREAM(
+                    1, 'TWT-LANMASTER', 
+                    'TWT-5EUTP-LSZH', 'Кабель UTP, 4 пары, кат.5e, LSZH, м.', 
+                    'UTP 5e LSZH').find_price()
     if check_utp5e_out.get():
         try:
-            DATASTREAM(int(enter_utp5e_out.get()), 'TWT-LANMASTER', 'TWT-5EUTP-OUT', 
-                'Кабель UTP, 4 пары, кат.5e, для внешней прокладки, м.', 
-                'UTP 5e OUT').find_price()
+            DATASTREAM(
+                    int(enter_utp5e_out.get()), 'TWT-LANMASTER', 
+                    'TWT-5EUTP-OUT', 
+                    'Кабель UTP, 4 пары, кат.5e, для внешней прокладки, м.', 
+                    'UTP 5e OUT').find_price()
         except:
-            DATASTREAM(1, 'TWT-LANMASTER', 'TWT-5EUTP-OUT', 
-                'Кабель UTP, 4 пары, кат.5e, для внешней прокладки, м.', 
-                'UTP 5e OUT').find_price()
+            DATASTREAM(
+                    1, 'TWT-LANMASTER', 
+                    'TWT-5EUTP-OUT', 
+                    'Кабель UTP, 4 пары, кат.5e, для внешней прокладки, м.', 
+                    'UTP 5e OUT').find_price()
     if check_ftp5e.get():
         try:
-            DATASTREAM(int(enter_ftp5e.get()), 'TWT-LANMASTER', 'TWT-5EFTP', 
-                'Кабель FTP, 4 пары, кат.5e, м.', 'FTP 5e').find_price()
+            DATASTREAM(
+                    int(enter_ftp5e.get()),'TWT-LANMASTER','TWT-5EFTP', 
+                    'Кабель FTP, 4 пары, кат.5e, м.', 'FTP 5e').find_price()
         except:
-            DATASTREAM(1, 'TWT-LANMASTER', 'TWT-5EFTP', 
-                'Кабель FTP, 4 пары, кат.5e, м.', 'FTP 5e').find_price()
+            DATASTREAM(
+                    1,'TWT-LANMASTER','TWT-5EFTP', 
+                    'Кабель FTP, 4 пары, кат.5e, м.', 'FTP 5e').find_price()
     if check_ftp5e_lszh.get():
         try:
-            DATASTREAM(int(enter_ftp5e_lszh.get()), 'TWT-LANMASTER', 'TWT-5EFTP-LSZH', 
-                'Кабель FTP, 4 пары, кат.5e, LSZH, м.', 'FTP 5e LSZH').find_price()
+            DATASTREAM(
+                    int(enter_ftp5e_lszh.get()), 'TWT-LANMASTER', 
+                    'TWT-5EFTP-LSZH', 'Кабель FTP, 4 пары, кат.5e, LSZH, м.', 
+                    'FTP 5e LSZH').find_price()
         except:
-            DATASTREAM(1, 'TWT-LANMASTER', 'TWT-5EFTP-LSZH', 
-                'Кабель FTP, 4 пары, кат.5e, LSZH, м.', 'FTP 5e LSZH').find_price()
+            DATASTREAM(
+                    1, 'TWT-LANMASTER', 
+                    'TWT-5EFTP-LSZH','Кабель FTP, 4 пары, кат.5e, LSZH, м.', 
+                    'FTP 5e LSZH').find_price()
     if check_ftp5e_out.get():
         try:
-            DATASTREAM(int(enter_ftp5e_out.get()), 'TWT-LANMASTER', 'TWT-5EFTP-OUT', 
-                'Кабель FTP, 4 пары, кат.5e, для внешней прокладки, м.', 
-                'FTP 5e OUT').find_price()
+            DATASTREAM(
+                    int(enter_ftp5e_out.get()), 'TWT-LANMASTER', 
+                    'TWT-5EFTP-OUT', 
+                    'Кабель FTP, 4 пары, кат.5e, для внешней прокладки, м.', 
+                    'FTP 5e OUT').find_price()
         except:
-            DATASTREAM(1, 'TWT-LANMASTER', 'TWT-5EFTP-OUT', 
-                'Кабель FTP, 4 пары, кат.5e, для внешней прокладки, м.', 
-                'FTP 5e OUT').find_price()
+            DATASTREAM(
+                    1, 'TWT-LANMASTER', 
+                    'TWT-5EFTP-OUT', 
+                    'Кабель FTP, 4 пары, кат.5e, для внешней прокладки, м.', 
+                    'FTP 5e OUT').find_price()
     if check_utp6.get():
         try:
-            DATASTREAM(int(enter_utp6.get()), 'TWT-LANMASTER', 'TWT-6UTP-GY', 
-                'Кабель UTP, 4 пары, Кат.6, м.', 'UTP 6').find_price()
+            DATASTREAM(
+                    int(enter_utp6.get()), 'TWT-LANMASTER', 'TWT-6UTP-GY', 
+                    'Кабель UTP, 4 пары, Кат.6, м.', 'UTP 6').find_price()
         except:
-            DATASTREAM(1, 'TWT-LANMASTER', 'TWT-6UTP-GY', 
-                'Кабель UTP, 4 пары, Кат.6, м.', 'UTP 6').find_price()
+            DATASTREAM(
+                    1, 'TWT-LANMASTER', 'TWT-6UTP-GY', 
+                    'Кабель UTP, 4 пары, Кат.6, м.', 'UTP 6').find_price()
     if check_utp6_lszh.get():
         try:
-            DATASTREAM(int(enter_utp6_lszh.get()), 'TWT-LANMASTER', 'TWT-6UTP-LSZH', 
-                'Кабель UTP, 4 пары, Кат.6, LSZH, м.', 'UTP 6 LSZH').find_price()
+            DATASTREAM(
+                    int(enter_utp6_lszh.get()), 'TWT-LANMASTER', 
+                    'TWT-6UTP-LSZH', 
+                    'Кабель UTP, 4 пары, Кат.6, LSZH, м.',  
+                    'UTP 6 LSZH').find_price()
         except:
-            DATASTREAM(1, 'TWT-LANMASTER', 'TWT-6UTP-LSZH', 
-                'Кабель UTP, 4 пары, Кат.6, LSZH, м.', 'UTP 6 LSZH').find_price()
+            DATASTREAM(
+                    1, 'TWT-LANMASTER', 
+                    'TWT-6UTP-LSZH', 
+                    'Кабель UTP, 4 пары, Кат.6, LSZH, м.', 
+                    'UTP 6 LSZH').find_price()
     if check_ftp6.get():
         try:
-            DATASTREAM(int(enter_ftp6.get()), 'TWT-LANMASTER', 'TWT-6FTP-GY', 
-                'Кабель FTP, 4 пары, Кат.6, м.', 'FTP 6').find_price()
+            DATASTREAM(
+                    int(enter_ftp6.get()), 'TWT-LANMASTER', 'TWT-6FTP-GY', 
+                    'Кабель FTP, 4 пары, Кат.6, м.', 'FTP 6').find_price()
         except:
-            DATASTREAM(1, 'TWT-LANMASTER', 'TWT-6FTP-GY', 
-                'Кабель FTP, 4 пары, Кат.6, м.', 'FTP 6').find_price()
+            DATASTREAM(
+                    1, 'TWT-LANMASTER', 'TWT-6FTP-GY', 
+                    'Кабель FTP, 4 пары, Кат.6, м.', 'FTP 6').find_price()
     if check_ftp6_lszh.get():
         try:
-            DATASTREAM(int(enter_ftp6_lszh.get()), 'TWT-LANMASTER', 'TWT-6FTP-LSZH', 
-                'Кабель FTP, 4 пары, Кат.6, LSZH, м.', 'FTP 6 LSZH').find_price()
+            DATASTREAM(
+                    int(enter_ftp6_lszh.get()), 'TWT-LANMASTER', 
+                    'TWT-6FTP-LSZH', 
+                    'Кабель FTP, 4 пары, Кат.6, LSZH, м.', 
+                    'FTP 6 LSZH').find_price()
         except:
-            DATASTREAM(1, 'TWT-LANMASTER', 'TWT-6FTP-LSZH', 
-                'Кабель FTP, 4 пары, Кат.6, LSZH, м.', 'FTP 6 LSZH').find_price()
+            DATASTREAM(
+                    1, 'TWT-LANMASTER', 
+                    'TWT-6FTP-LSZH', 
+                    'Кабель FTP, 4 пары, Кат.6, LSZH, м.', 
+                    'FTP 6 LSZH').find_price()
     if check_rg6.get():
         try:
-            ETPROM(int(enter_rg6.get()), 'https://etprom.by/catalog/kabel/rg_rk/12702/', 
-                'Кабель телевизионный RG-6 75 ОМ с однопроволочным медным внутренним проводником, м.', 
-                'Кабель RG-6').find_price()
+            ETPROM(int(enter_rg6.get()), 
+                   'https://etprom.by/catalog/kabel/rg_rk/12702/', 
+                   'Кабель телевизионный RG-6 75 ОМ с однопроволочным '
+                   ' медным внутренним проводником, м.', 
+                   'Кабель RG-6').find_price()
         except:
-            ETPROM(1, 'https://etprom.by/catalog/kabel/rg_rk/12702/', 
-                'Кабель телевизионный RG-6 75 ОМ с однопроволочным медным внутренним проводником, м.', 
-                'Кабель RG-6').find_price()
-# МАТЕРИАЛЫ: ОПТИЧЕСКИЙ КАБЕЛЬ
+            ETPROM(1, 
+                   'https://etprom.by/catalog/kabel/rg_rk/12702/', 
+                   'Кабель телевизионный RG-6 75 ОМ с однопроволочным '
+                   ' медным внутренним проводником, м.', 
+                   'Кабель RG-6').find_price()
+
+# Materials: Optical Cable
     if check_vok2.get():
         try:
-            DATASTREAM(int(enter_vok2.get()), 'TWT-LANMASTER', 'LAN-OFC-DI2-S2-LS', 'Кабель оптический, LSZH, 2 волокна, SM, м.', 'Кабель оптический 2-вол.').find_price()
+            DATASTREAM(int(enter_vok2.get()), 'TWT-LANMASTER', 'LAN-OFC-DI2-S2-LS', 
+                'Кабель оптический, LSZH, 2 волокна, SM, м.', 'Кабель оптический 2-вол.').find_price()
         except:
-            messagebox.showerror('Внимание!', 'Введите целое значение для "Кабель оптический 2 жилы"!')
-            return()
+            DATASTREAM(1, 'TWT-LANMASTER', 'LAN-OFC-DI2-S2-LS', 
+                'Кабель оптический, LSZH, 2 волокна, SM, м.', 'Кабель оптический 2-вол.').find_price()
     if check_vok4.get():
         try:
-            DATASTREAM(int(enter_vok4.get()), 'TWT-LANMASTER', 'LAN-OFC-DI4-S2-LS', 'Кабель оптический, LSZH, 4 волокна, SM, м.', 'Кабель оптический 4-вол.').find_price()
+            DATASTREAM(int(enter_vok4.get()), 'TWT-LANMASTER', 'LAN-OFC-DI4-S2-LS', 
+                'Кабель оптический, LSZH, 4 волокна, SM, м.', 'Кабель оптический 4-вол.').find_price()
         except:
-            messagebox.showerror('Внимание!', 'Введите целое значение для "Кабель оптический 4 жилы"!')
-            return()
+            DATASTREAM(1, 'TWT-LANMASTER', 'LAN-OFC-DI4-S2-LS', 
+                'Кабель оптический, LSZH, 4 волокна, SM, м.', 'Кабель оптический 4-вол.').find_price()
     if check_vok8.get():
         try:
-            DATASTREAM(int(enter_vok8.get()), 'TWT-LANMASTER', 'LAN-OFC-DI8-S2-LS', 'Кабель оптический, LSZH, 8 волокон, SM, м.', 'Кабель оптический 8-вол.').find_price()
+            DATASTREAM(int(enter_vok8.get()), 'TWT-LANMASTER', 'LAN-OFC-DI8-S2-LS', 
+                'Кабель оптический, LSZH, 8 волокон, SM, м.', 'Кабель оптический 8-вол.').find_price()
         except:
-            messagebox.showerror('Внимание!', 'Введите целое значение для "Кабель оптический 8 жил"!')
-            return()
+            DATASTREAM(1, 'TWT-LANMASTER', 'LAN-OFC-DI8-S2-LS', 
+                'Кабель оптический, LSZH, 8 волокон, SM, м.', 'Кабель оптический 8-вол.').find_price()
     if check_vok12.get():
         try:
-            DATASTREAM(int(enter_vok12.get()), 'TWT-LANMASTER', 'LAN-OFC-DI12-S2-LS', 'Кабель оптический, LSZH, 12 волокон, SM, м.', 'Кабель оптический 12-вол.').find_price()
+            DATASTREAM(int(enter_vok12.get()), 'TWT-LANMASTER', 'LAN-OFC-DI12-S2-LS', 
+                'Кабель оптический, LSZH, 12 волокон, SM, м.', 'Кабель оптический 12-вол.').find_price()
         except:
-            messagebox.showerror('Внимание!', 'Введите целое значение для "Кабель оптический 12 жил"!')
-            return()
+            DATASTREAM(1, 'TWT-LANMASTER', 'LAN-OFC-DI12-S2-LS', 
+                'Кабель оптический, LSZH, 12 волокон, SM, м.', 'Кабель оптический 12-вол.').find_price()
     if check_vok16.get():
         try:
-            DATASTREAM(int(enter_vok16.get()), 'TWT-LANMASTER', 'LAN-OFC-DI16-S2-LS', 'Кабель оптический, LSZH, 16 волокон, SM, м.', 'Кабель оптический 16-вол.').find_price()
+            DATASTREAM(int(enter_vok16.get()), 'TWT-LANMASTER', 'LAN-OFC-DI16-S2-LS', 
+                'Кабель оптический, LSZH, 16 волокон, SM, м.', 'Кабель оптический 16-вол.').find_price()
         except:
-            messagebox.showerror('Внимание!', 'Введите целое значение для "Кабель оптический 16 жил"!')
-            return()
+            DATASTREAM(1, 'TWT-LANMASTER', 'LAN-OFC-DI16-S2-LS', 
+                'Кабель оптический, LSZH, 16 волокон, SM, м.', 'Кабель оптический 16-вол.').find_price()
     if check_vok24.get():
         try:
-            DATASTREAM(int(enter_vok24.get()), 'TWT-LANMASTER', 'LAN-OFC-DI24-S2-LS', 'Кабель оптический, LSZH, 24 волокна, SM, м.', 'Кабель оптический 24-вол.').find_price()
+            DATASTREAM(int(enter_vok24.get()), 'TWT-LANMASTER', 'LAN-OFC-DI24-S2-LS', 
+                'Кабель оптический, LSZH, 24 волокна, SM, м.', 'Кабель оптический 24-вол.').find_price()
         except:
-            messagebox.showerror('Внимание!', 'Введите целое значение для "Кабель оптический 24 жил"!')
-            return()
-    if check_vok24.get():
-        try:
-            DATASTREAM(int(enter_vok24.get()), 'TWT-LANMASTER', 'LAN-OFC-DI24-S2-LS', 'Кабель оптический, LSZH, 24 волокна, SM, м.', 'Кабель оптический 24-вол.').find_price()
-        except:
-            messagebox.showerror('Внимание!', 'Введите целое значение для "Кабель оптический 24 жилы"!')
-            return()
-# МАТЕРИАЛЫ: РОЗЕТКИ СЛАБОТОЧНЫЕ
+            DATASTREAM(1, 'TWT-LANMASTER', 'LAN-OFC-DI24-S2-LS', 
+                'Кабель оптический, LSZH, 24 волокна, SM, м.', 'Кабель оптический 24-вол.').find_price()
+
+# Sockets RJ45
     if check_roz1x.get():
         try:
-            DATASTREAM(int(enter_roz1x.get()), 'TWT-LANMASTER', 'TWT-SM1-45-WH', 'Розетка настенная, 1 порт RJ-45 кат.5е, UTP, белая, шт.', 'Розетка 1хRJ45').find_price()
+            DATASTREAM(int(enter_roz1x.get()), 'TWT-LANMASTER', 'TWT-SM1-45-WH', 
+                'Розетка настенная, 1 порт RJ-45 кат.5е, UTP, белая, шт.', 'Розетка 1хRJ45').find_price()
         except:
-            messagebox.showerror('Внимание!', 'Введите целое значение для "Розетка TWT 1хRJ45"!')
-            return()
+            DATASTREAM(1, 'TWT-LANMASTER', 'TWT-SM1-45-WH', 
+                'Розетка настенная, 1 порт RJ-45 кат.5е, UTP, белая, шт.', 'Розетка 1хRJ45').find_price()
     if check_roz2x.get():
         try:
-            DATASTREAM(int(enter_roz2x.get()), 'TWT-LANMASTER', 'TWT-SM2-4545-WH', 'Розетка настенная, 2 порта RJ-45 кат.5е, UTP, белая, шт.', 'Розетка 2хRJ45').find_price()
+            DATASTREAM(int(enter_roz2x.get()), 'TWT-LANMASTER', 'TWT-SM2-4545-WH', 
+                'Розетка настенная, 2 порта RJ-45 кат.5е, UTP, белая, шт.', 'Розетка 2хRJ45').find_price()
         except:
-            messagebox.showerror('Внимание!', 'Введите целое значение для "Розетка TWT 2хRJ45"!')
-            return()
+            DATASTREAM(1, 'TWT-LANMASTER', 'TWT-SM2-4545-WH', 
+                'Розетка настенная, 2 порта RJ-45 кат.5е, UTP, белая, шт.', 'Розетка 2хRJ45').find_price()
     if check_roz1x_quteo.get():
         try:
-            WSD(int(enter_roz1x_quteo.get()), 'https://wsd.by/catalog/elektroustanovochnoe-oborudovanie/rozetki-i-vyklyuchateli-otkrytogo-montazha-nakladnye/rozetki-i-vyklyuchateli-legrand-otkrytogo-montazha-nakladnye/quteo-nakladnoy-montazh/quteo-belyy-tsvet/rozetki-belyy-quteo-legrand/quteo-rozetka-1khrj-45-5e-utp-belyy/', 'Legrand Quteo Розетка 1хRJ45 5E UTP (белая) Арт.782224, шт.', 'Legrand Quteo 1хRJ45').find_price()
+            WSD(int(enter_roz1x_quteo.get()), 
+                'https://wsd.by/catalog/elektroustanovochnoe-oborudovanie/rozetki-i-vyklyuchateli-otkrytogo-montazha'
+                '-nakladnye/rozetki-i-vyklyuchateli-legrand-otkrytogo-montazha-nakladnye/quteo-nakladnoy-montazh/'
+                'quteo-belyy-tsvet/rozetki-belyy-quteo-legrand/quteo-rozetka-1khrj-45-5e-utp-belyy/', 'Legrand Quteo Розетка 1хRJ45 5E UTP (белая) Арт.782224, шт.', 'Legrand Quteo 1хRJ45').find_price()
         except:
             messagebox.showerror('Внимание!', 'Введите целое значение для "Розетка Legrand Quteo 1хRJ45"!')
             return()
