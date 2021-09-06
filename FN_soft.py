@@ -882,15 +882,15 @@ def get_input():
         workbook.close()
 
 # variables
-    material_list       = []    # наименование
-    short_name_list     = []    # короткое название
-    kolvo_list          = []    # количество
-    cena_bez_nds_list   = []    # цена без НДС
-    cena_s_nds_list     = []    # цена с НДС
-    name_of_work        = []    # наименование работы
-    kolvo_of_work       = []    # количество работы
-    price_per_one       = []    # цена за единицу работы
-    price_of_work       = []    # цена за всю работу
+    material_list = []
+    short_name_list = []
+    kolvo_list = []
+    cena_bez_nds_list = []
+    cena_s_nds_list = []
+    name_of_work = []
+    kolvo_of_work = []
+    price_per_one = []
+    price_of_work = []
 
 
 # check of datastream price
@@ -924,7 +924,6 @@ def get_input():
 
 # find price of material in Datastream price
     class DATASTREAM():
-        
         def __init__(self, enter, vkladka, artikul, description, short_description):
             self.enter = enter
             self.vkladka = vkladka
@@ -940,20 +939,113 @@ def get_input():
                 df = df.rename(columns={'Unnamed: 3': 'Line3'})
                 df = df[df.Line0 == self.artikul]
                 df = df[['Line3']]
+                
                 try:
                     cena_bez_nds = float(df.mean())
                 except:
                     cena_bez_nds = 0
+                
                 cena_s_nds = round(cena_bez_nds*1.2,2)
+                
                 material_list.append(self.description)
                 short_name_list.append(self.short_description)
                 kolvo_list.append(self.enter)
                 cena_s_nds_list.append(cena_s_nds)
                 cena_bez_nds_list.append(cena_bez_nds)
 
-# find price of material on ETP site
-    class ETPROM():
+# find price of material in Avant Video price
+    class AVANT():
+        def __init__(self, enter, vkladka, artikul, description, short_description):
+            self.enter = enter
+            self.vkladka = vkladka
+            self.artikul = artikul
+            self.description = description
+            self.short_description = short_description
         
+        def find_price(self):
+            if self.enter:
+                df = Avant_price.parse(self.vkladka)
+                df = df[['#', 'BYN с НДС']]
+                df = df[df['#'] == self.artikul]
+                df = df[['BYN с НДС']]
+
+                try:
+                    cena_s_nds = (df.iat[0,0])
+                except:
+                    cena_s_nds = 0
+                
+                cena_bez_nds = round(cena_s_nds/1.2,2)                    
+
+                material_list.append(self.description)
+                short_name_list.append(self.short_description)
+                kolvo_list.append(self.enter)
+                cena_s_nds_list.append(cena_s_nds)
+                cena_bez_nds_list.append(cena_bez_nds)
+
+# find price of material in Avant Skd price
+    class AVANT_SKD():
+        def __init__(self, enter, vkladka, artikul, description, short_description):
+            self.enter = enter
+            self.vkladka = vkladka
+            self.artikul = artikul
+            self.description = description
+            self.short_description = short_description
+        
+        def find_price(self):
+            if self.enter:
+                df = Avant_price_skud.parse(self.vkladka)
+                df = df[['Unnamed: 1', 'Unnamed: 3']]
+                df = df.rename(columns={'Unnamed: 1': 'Line1'})
+                df = df.rename(columns={'Unnamed: 3': 'Line3'})
+                df = df[df.Line1 == self.artikul]
+                df = df[['Line3']]
+                
+                try:
+                    cena_s_nds = (df.iat[0,0])
+                except:
+                    cena_s_nds = 0
+                
+                cena_bez_nds = round(cena_s_nds/1.2,2) 
+
+                material_list.append(self.description)
+                short_name_list.append(self.short_description)
+                kolvo_list.append(self.enter)
+                cena_s_nds_list.append(cena_s_nds)
+                cena_bez_nds_list.append(cena_bez_nds)
+
+# find price of material in Netair price
+    class NETAIR():
+        def __init__(self, enter, vkladka, artikul, description, short_description):
+            self.enter = enter
+            self.vkladka = vkladka
+            self.artikul = artikul
+            self.description = description
+            self.short_description = short_description
+        
+        def find_price(self): 
+            if self.enter:
+                df = Netair_price.parse(self.vkladka)
+                df = df[['Unnamed: 3', 'Unnamed: 7']]
+                df = df.rename(columns={'Unnamed: 3': 'Line3'})
+                df = df.rename(columns={'Unnamed: 7': 'Line7'})
+                df = df[df.Line3 == self.artikul]
+                df = df[['Line7']]
+                
+                try:
+                    cena_s_nds = (df.iat[0,0])
+                except:
+                    cena_s_nds = 0
+                
+                cena_bez_nds = round(cena_s_nds/1.2,2)
+
+                material_list.append(self.description)
+                short_name_list.append(self.short_description)
+                kolvo_list.append(self.enter)
+                cena_s_nds_list.append(cena_s_nds)
+                cena_bez_nds_list.append(cena_bez_nds)                
+
+# find price of material on Etprom site
+    class ETPROM():
         def __init__(self, enter, url, description, short_description):
             self.enter = enter
             self.url = url
@@ -965,6 +1057,7 @@ def get_input():
                 header = {'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3','accept-encoding':'gzip, deflate, br','accept-language':'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7','cache-control':'no-cache','dnt': '1','pragma': 'no-cache','sec-fetch-mode': 'navigate','sec-fetch-site': 'none','sec-fetch-user': '?1','upgrade-insecure-requests': '1','user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36'}
                 session = requests.Session()
                 session.headers = header
+                
                 try:
                     r = session.get(self.url)
                     html = r.text
@@ -972,10 +1065,12 @@ def get_input():
                     cena_bez_nds = soup.find('span', class_="price_value").get_text()
                 except:
                     cena_bez_nds = 0
+                
                 try:
                     cena_bez_nds = float(cena_bez_nds)
                 except:
                     cena_bez_nds = 0
+                
                 cena_bez_nds = round(cena_bez_nds*1.2,2)
                 cena_s_nds = round(cena_bez_nds*1.2,2)
 
@@ -985,62 +1080,7 @@ def get_input():
                 cena_s_nds_list.append(cena_s_nds)
                 cena_bez_nds_list.append(cena_bez_nds)
 
-# класс Авант видео
-    class AVANT():
-        def __init__(self, enter, vkladka, artikul, description, short_description):
-            self.enter = enter
-            self.vkladka = vkladka
-            self.artikul = artikul
-            self.description = description
-            self.short_description = short_description
-        def find_price(self):
-            if self.enter == 0:
-                pass
-            else:
-                df = Avant_price.parse(self.vkladka)
-                df = df[['#', 'BYN с НДС']]
-                df = df[df['#'] == self.artikul]
-                df = df[['BYN с НДС']]
-
-                try:
-                  cena_s_nds = (df.iat[0,0])
-                  cena_bez_nds = round(cena_s_nds/1.2,2)
-                except:
-                  cena_s_nds = 0
-                  cena_bez_nds = round(cena_s_nds/1.2,2)                    
-
-                material_list.append(self.description)
-                short_name_list.append(self.short_description)
-                kolvo_list.append(self.enter)
-                cena_s_nds_list.append(cena_s_nds)
-                cena_bez_nds_list.append(cena_bez_nds)
-# класс Авант скуд
-    class AVANT_SKD():
-        def __init__(self, enter, vkladka, artikul, description, short_description):
-            self.enter = enter
-            self.vkladka = vkladka
-            self.artikul = artikul
-            self.description = description
-            self.short_description = short_description
-        def find_price(self):
-            if self.enter == 0:
-                pass
-            else:
-                df = Avant_price_skud.parse(self.vkladka)
-                df = df[['Unnamed: 1', 'Unnamed: 3']]
-                df = df.rename(columns={'Unnamed: 1': 'Line1'})
-                df = df.rename(columns={'Unnamed: 3': 'Line3'})
-                df = df[df.Line1 == self.artikul]
-                df = df[['Line3']]
-                cena_s_nds = (df.iat[0,0])
-                cena_bez_nds = round(cena_s_nds/1.2,2)
-
-                material_list.append(self.description)
-                short_name_list.append(self.short_description)
-                kolvo_list.append(self.enter)
-                cena_s_nds_list.append(cena_s_nds)
-                cena_bez_nds_list.append(cena_bez_nds)
-# класс Сфера
+# find price of material on Secur.by site
     class SFERA():
         def __init__(self, enter, url, description, short_description):
             self.enter = enter
@@ -1049,32 +1089,30 @@ def get_input():
             self.short_description = short_description
 
         def find_price(self):
-            if self.enter == 0:
-                pass
-            else:
-                print('Стучимся на сайт СФЕРЫ')
+            if self.enter:
                 header = {'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3','accept-encoding':'gzip, deflate, br','accept-language':'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7','cache-control':'no-cache','dnt': '1','pragma': 'no-cache','sec-fetch-mode': 'navigate','sec-fetch-site': 'none','sec-fetch-user': '?1','upgrade-insecure-requests': '1','user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36'}
                 session = requests.Session()
                 session.headers = header
-                r = session.get(self.url)
-                html = r.text
-                soup = BeautifulSoup(html, 'lxml')
-                price =  soup.find('p', class_="price shk-price").get_text()
-                print('Достучались')
-                price = price.split(',')
-                pr1=str(price[0])
-                pr2=str(price[1])
-                pr2=(pr2[0:2])
-                if len(pr1)==2:
-                    price=float(pr1+'.'+pr2)
-                elif len(pr1)==3:
-                    price=float(pr1+'.'+pr2)
-                elif len(pr1)==5:
-                    pr1=pr1.split(' ')
-                    price=float(pr1[0]+pr1[1]+'.'+pr2)
-                else:
-                    messagebox.showinfo('Внимание!', 'Есть вопрос с ценой на сайте!')
-                    print('Есть вопрос с ценой на сайте!')  
+                
+                try:
+                    r = session.get(self.url)
+                    html = r.text
+                    soup = BeautifulSoup(html, 'lxml')
+                    price =  soup.find('p', class_="price shk-price").get_text()
+                    price = price.split(',')
+                    pr1 = str(price[0])
+                    pr2 = str(price[1])
+                    pr2 = (pr2[0:2])
+                    if len(pr1) == 2:
+                        price = float(pr1 + '.' + pr2)
+                    elif len(pr1) == 3:
+                        price = float(pr1 + '.' + pr2)
+                    elif len(pr1) == 5:
+                        pr1 = pr1.split(' ')
+                        price = float(pr1[0] + pr1[1] + '.' + pr2)
+                except:
+                    price = 0
+                
                 cena_s_nds = float(price)
                 cena_bez_nds = round(cena_s_nds/1.2,2)
 
@@ -1083,7 +1121,8 @@ def get_input():
                 kolvo_list.append(self.enter)
                 cena_s_nds_list.append(cena_s_nds)
                 cena_bez_nds_list.append(cena_bez_nds)
-# класс СОБ
+
+# find price of material on Sob.by site
     class SOB():
         def __init__(self, enter, url, description, short_description):
             self.enter = enter
@@ -1092,30 +1131,27 @@ def get_input():
             self.short_description = short_description
 
         def find_price(self):
-            if self.enter == 0:
-                pass
-            else:
-                print('Стучимся на сайт СОБ')
+            if self.enter:
                 session = requests.Session()
-                r = session.get(self.url)
-                html = r.text                                                           
-                soup = BeautifulSoup(html, 'lxml')
-                price =  soup.find('span', class_="count").get_text()
-                print('Достучались')
-                price=price.split(',')
-                pr1=str(price[0])
-                pr2=str(price[1])
-                pr2=(pr2[0:2])
-                if len(pr1)==2:
-                    price=float(pr1+'.'+pr2)
-                elif len(pr1)==3:
-                    price=float(pr1+'.'+pr2)
-                elif len(pr1)==5:
-                    pr1=pr1.split(' ')
-                    price=float(pr1[0]+pr1[1]+'.'+pr2)
-                else:
-                    messagebox.showinfo('Внимание!', 'Есть вопрос с ценой ' + str(self.short_description) + ' на сайте!')
-                    print('Есть вопрос с ценой ' + str(self.short_description) + ' на сайте!')  
+                try:
+                    r = session.get(self.url)
+                    html = r.text                                                           
+                    soup = BeautifulSoup(html, 'lxml')
+                    price =  soup.find('span', class_="count").get_text()
+                    price = price.split(',')
+                    pr1 = str(price[0])
+                    pr2 = str(price[1])
+                    pr2 = (pr2[0:2])
+                    if len(pr1) == 2:
+                        price = float(pr1 + '.' + pr2)
+                    elif len(pr1) == 3:
+                        price = float(pr1 + '.' + pr2)
+                    elif len(pr1) == 5:
+                        pr1 = pr1.split(' ')
+                        price = float(pr1[0] + pr1[1] + '.' + pr2)
+                except:
+                    price = 0
+                
                 cena_s_nds = float(price)
                 cena_bez_nds = round(cena_s_nds/1.2,2)
 
@@ -1124,38 +1160,38 @@ def get_input():
                 kolvo_list.append(self.enter)
                 cena_s_nds_list.append(cena_s_nds)
                 cena_bez_nds_list.append(cena_bez_nds)
-# класс Стелберри
+
+# find price of material on Stelberry site
     class STELBERRY():
         def __init__(self, enter, url, description, short_description):
             self.enter = enter
             self.url = url
             self.description = description
             self.short_description = short_description
+        
         def find_price(self):
-            if self.enter == 0:
-                pass
-            else:
-                print('Стучимся на сайт STELBERRY')
+            if self.enter:
                 session = requests.Session()
-                r = session.get(self.url)
-                html = r.text                                                           
-                soup = BeautifulSoup(html, 'lxml')
-                price =  soup.find('span', itemprop="price").get_text()
-                print('Достучались')
-                price=price.split(',')
-                pr1=str(price[0])
-                pr2=str(price[1])
-                pr2=(pr2[0:2])
-                if len(pr1)==2:
-                    price=float(pr1+'.'+pr2)
-                elif len(pr1)==3:
-                    price=float(pr1+'.'+pr2)
-                elif len(pr1)==5:
-                    pr1=pr1.split(' ')
-                    price=float(pr1[0]+pr1[1]+'.'+pr2)
-                else:
-                    messagebox.showinfo('Внимание!', 'Есть вопрос с ценой на сайте!')
-                    print('Есть вопрос с ценой на сайте!')  
+                
+                try:
+                    r = session.get(self.url)
+                    html = r.text                                                           
+                    soup = BeautifulSoup(html, 'lxml')
+                    price =  soup.find('span', itemprop="price").get_text()
+                    price = price.split(',')
+                    pr1 = str(price[0])
+                    pr2 = str(price[1])
+                    pr2 = (pr2[0:2])
+                    if len(pr1) == 2:
+                        price = float(pr1 + '.' + pr2)
+                    elif len(pr1) == 3:
+                        price = float(pr1 + '.' + pr2)
+                    elif len(pr1) == 5:
+                        pr1 = pr1.split(' ')
+                        price = float(pr1[0] + pr1[1] + '.' + pr2)
+                except:
+                    price = 0 
+                
                 cena_s_nds = float(price)
                 cena_bez_nds = round(cena_s_nds/1.2,2)
                 
@@ -1164,90 +1200,38 @@ def get_input():
                 kolvo_list.append(self.enter)
                 cena_s_nds_list.append(cena_s_nds)
                 cena_bez_nds_list.append(cena_bez_nds)
-# класс WORK
-    class WORK():
-        def __init__(self, name, price, check, enter):
-            self.name = name
-            self.price = price
-            self.check = check
-            self.enter = enter
 
-        def find_price(self):
-            if self.check.get() == 0:
-                kolvo = 0
-            else:
-                try:
-                    kolvo = int(self.enter.get())
-                except:
-                    messagebox.showinfo('Внимание!', 'Введите целое значение для ' + self.name + '!')
-                    return()
-            if kolvo == 0:
-                name_of_work.append(self.name)
-                kolvo_of_work.append(0)
-                price_per_one.append(self.price)
-                price_of_work.append(round(kolvo*self.price,2))
-            else:
-                name_of_work.append(self.name)
-                kolvo_of_work.append(kolvo)
-                price_per_one.append(self.price)
-                price_of_work.append(round(kolvo*self.price,2))
-# класс Нетаир
-    class NETAIR():
-        def __init__(self, enter, vkladka, artikul, description, short_description):
-            self.enter = enter
-            self.vkladka = vkladka
-            self.artikul = artikul
-            self.description = description
-            self.short_description = short_description
-        def find_price(self): 
-            if self.enter == 0:
-                pass
-            else:
-                df = Netair_price.parse(self.vkladka)
-                df = df[['Unnamed: 3', 'Unnamed: 7']]
-                df = df.rename(columns={'Unnamed: 3': 'Line3'})
-                df = df.rename(columns={'Unnamed: 7': 'Line7'})
-                df = df[df.Line3 == self.artikul]
-                df = df[['Line7']]
-                cena_s_nds = (df.iat[0,0])
-                cena_bez_nds = round(cena_s_nds/1.2,2)
-
-                material_list.append(self.description)
-                short_name_list.append(self.short_description)
-                kolvo_list.append(self.enter)
-                cena_s_nds_list.append(cena_s_nds)
-                cena_bez_nds_list.append(cena_bez_nds)
-# класс Айпиматика
+# find price of material on Ipmatika site
     class IPMATIKA():
         def __init__(self, enter, url, description, short_description):
             self.enter = enter
             self.url = url
             self.description = description
             self.short_description = short_description
+        
         def find_price(self):
-            if self.enter == 0:
-                pass
-            else:
+            if self.enter:
                 session = requests.Session()
-                r = session.get(self.url)
-                html = r.text
-                soup = BeautifulSoup(html, 'lxml')
-                price = soup.find('div', class_="catalog_price_value").get_text()
-                price=price.split(',')
-                pr1=str(price[0])
-                pr2=str(price[1])
-                pr1=(pr1[2:])
-                pr2=(pr2[0:2])
-                if len(pr1)==2:
-                    price=float(pr1+'.'+pr2)
-                elif len(pr1)==3:
-                    price=float(pr1+'.'+pr2)
-                elif len(pr1)==5:
-                    pr1=pr1.split(' ')
-                    price=float(pr1[0]+pr1[1]+'.'+pr2)
-                else:
-                    messagebox.showinfo('Внимание!', 'Есть вопрос с ценой ' + str(self.short_description) + ' на сайте!')
-                    print('Есть вопрос с ценой ' + str(self.short_description) + ' на сайте!')      
+                try:
+                    r = session.get(self.url)
+                    html = r.text
+                    soup = BeautifulSoup(html, 'lxml')
+                    price = soup.find('div', class_="catalog_price_value").get_text()
+                    price = price.split(',')
+                    pr1 = str(price[0])
+                    pr2 = str(price[1])
+                    pr1 = (pr1[2:])
+                    pr2 = (pr2[0:2])
+                    if len(pr1) == 2:
+                        price = float(pr1 + '.' + pr2)
+                    elif len(pr1) == 3:
+                        price = float(pr1 + '.' + pr2)
+                    elif len(pr1) == 5:
+                        pr1 = pr1.split(' ')
+                        price = float(pr1[0] + pr1[1] + '.' + pr2)
+                except:
+                    price = 0      
+                
                 cena_s_nds = price
                 cena_bez_nds = round(cena_s_nds/1.2,2)
 
@@ -1256,27 +1240,29 @@ def get_input():
                 kolvo_list.append(self.enter)
                 cena_s_nds_list.append(cena_s_nds)
                 cena_bez_nds_list.append(cena_bez_nds)
-# класс WSD
+
+# find price of material on wsd.by site
     class WSD():
         def __init__(self, enter, url, description, short_description):
             self.enter = enter
             self.url = url
             self.description = description
             self.short_description = short_description
+        
         def find_price(self):
-            if self.enter == 0:
-                pass
-            else:
+            if self.enter:
                 session = requests.Session()
                 r = session.get(self.url)
                 html = r.text
                 soup = BeautifulSoup(html, 'lxml')
                 price = soup.find('div', class_="bxr-market-item-price bxr-format-price bxr-market-price-without-name").get_text()
                 price = price.split('руб')
+                
                 try:
                     price = float(price[0])
                 except:
-                    print('Не получил цену с wsd.by')
+                    price = 0
+                
                 cena_bez_nds = price
                 cena_s_nds = round(cena_bez_nds*1.2,2)
 
@@ -1285,17 +1271,17 @@ def get_input():
                 kolvo_list.append(self.enter)
                 cena_s_nds_list.append(cena_s_nds)
                 cena_bez_nds_list.append(cena_bez_nds)
-# класс Crazyservice
+
+# find price of material on crazyservice.by site
     class CRAZY():
         def __init__(self, enter, url, description, short_description):
             self.enter = enter
             self.url = url
             self.description = description
             self.short_description = short_description
+        
         def find_price(self):
-            if self.enter == 0:
-                pass
-            else:
+            if self.enter0:
                 session = requests.Session()
                 r = session.get(self.url)
                 html = r.text
@@ -1305,7 +1291,8 @@ def get_input():
                 try:
                     price = float(price)
                 except:
-                    print('Не получил цену с crazyservice.by')
+                    price = 0
+                
                 cena_bez_nds = price
                 cena_s_nds = round(cena_bez_nds*1.2,2)
 
@@ -1314,17 +1301,17 @@ def get_input():
                 kolvo_list.append(self.enter)
                 cena_s_nds_list.append(cena_s_nds)
                 cena_bez_nds_list.append(cena_bez_nds)
-# класс Solosecurity
+
+# find price of material on solosecurity.by site
     class SOLO():
         def __init__(self, enter, url, description, short_description):
             self.enter = enter
             self.url = url
             self.description = description
             self.short_description = short_description
+        
         def find_price(self):
-            if self.enter == 0:
-                pass
-            else:
+            if self.enter:
                 header = {'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3','accept-encoding':'gzip, deflate, br','accept-language':'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7','cache-control':'no-cache','dnt': '1','pragma': 'no-cache','sec-fetch-mode': 'navigate','sec-fetch-site': 'none','sec-fetch-user': '?1','upgrade-insecure-requests': '1','user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36'}
                 session = requests.Session()
                 session.headers = header
@@ -1336,7 +1323,8 @@ def get_input():
                 try:
                     price = float(price[0])
                 except:
-                    print('Не получил цену с solosecurity.by')
+                    price = 0
+                
                 cena_s_nds = price
                 cena_bez_nds = round(cena_s_nds/1.2,2)
 
@@ -1345,17 +1333,17 @@ def get_input():
                 kolvo_list.append(self.enter)
                 cena_s_nds_list.append(cena_s_nds)
                 cena_bez_nds_list.append(cena_bez_nds)
-# класс Activsb
+
+# find price of material on activesb.by site
     class ASB():
         def __init__(self, enter, url, description, short_description):
             self.enter = enter
             self.url = url
             self.description = description
             self.short_description = short_description
+        
         def find_price(self):
-            if self.enter == 0:
-                pass
-            else:
+            if self.enter:
                 header = {'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3','accept-encoding':'gzip, deflate, br','accept-language':'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7','cache-control':'no-cache','dnt': '1','pragma': 'no-cache','sec-fetch-mode': 'navigate','sec-fetch-site': 'none','sec-fetch-user': '?1','upgrade-insecure-requests': '1','user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36'}
                 session = requests.Session()
                 session.headers = header
@@ -1366,10 +1354,12 @@ def get_input():
                 price = price.split('руб')
                 price = price[0]
                 price = price.replace(',','.')
+                
                 try:
                     price = float(price)
                 except:
-                    print('Не получил цену с activsb.by')
+                    price = 0
+                
                 cena_s_nds = price
                 cena_bez_nds = round(cena_s_nds/1.2,2)
 
@@ -1379,6 +1369,31 @@ def get_input():
                 cena_s_nds_list.append(cena_s_nds)
                 cena_bez_nds_list.append(cena_bez_nds)
 
+# find price of entered work
+    class WORK():
+        def __init__(self, name, price, check, enter):
+            self.name = name
+            self.price = price
+            self.check = check
+            self.enter = enter
+
+        def find_price(self):
+            if self.check.get():
+                try:
+                    kolvo = int(self.enter.get())
+                except:
+                    kolvo = 0
+            
+            if kolvo == 0:
+                name_of_work.append(self.name)
+                kolvo_of_work.append(0)
+                price_per_one.append(self.price)
+                price_of_work.append(round(kolvo*self.price,2))
+            else:
+                name_of_work.append(self.name)
+                kolvo_of_work.append(kolvo)
+                price_per_one.append(self.price)
+                price_of_work.append(round(kolvo*self.price,2))
 
 # find prices of first page
     if check_utp5e.get():
