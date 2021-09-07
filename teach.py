@@ -188,3 +188,40 @@ print('d2 =', d2)
 d3 = d2.popitem()
 print('d3 =', d3)
 print('d2 =', d2)'''
+
+
+# Cycles
+
+# 'while' cycle
+
+'''i = 5
+while i < 15:
+    print(i)
+    i = i + 2'''
+
+# 'for' cycle
+
+'''for i in 'hello world':  
+    print(i * 2, end='')'''
+
+# 'continue' operator
+
+'''for i in 'hello world': 
+    if i == 'o': 
+        continue    
+    print(i * 2, end='')'''
+
+# 'break' operator
+
+'''for i in 'hello world': 
+    if i == 'o': 
+        continue    
+    print(i * 2, end='')'''
+
+# 'else' operator
+
+'''for i in 'hello world':
+    if i == 'l':
+        break
+else:
+    print('There is no 5 in string')'''
